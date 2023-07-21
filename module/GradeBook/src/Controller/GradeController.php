@@ -2,27 +2,18 @@
 
 namespace GradeBook\Controller;
 
-use Laminas\Mvc\Controller\AbstractActionController;
+use GradeBook\Entity\Repository\GradeRepository;
+use GradeBook\Form\GradeForm;
 
-class GradeController extends AbstractActionController
+class GradeController extends CustomController
 {
-    public function indexAction()
+    public function __construct(GradeRepository $repository)
     {
-
+        $this->repository = $repository;
+        $this->entityName = 'grade';
     }
-
-    public function addAction()
+    public function getNewFormInstance(): GradeForm
     {
-
-    }
-
-    public function editAction()
-    {
-
-    }
-
-    public function deleteAction()
-    {
-
+        return new GradeForm();
     }
 }
