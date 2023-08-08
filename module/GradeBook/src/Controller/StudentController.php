@@ -4,16 +4,31 @@ namespace GradeBook\Controller;
 
 use GradeBook\Entity\Repository\StudentRepository;
 use GradeBook\Form\StudentForm;
+use Laminas\Http\Response;
+use Laminas\View\Model\ViewModel;
 
 class StudentController extends CustomController {
 
-    public function __construct(StudentRepository $repository)
+    public function __construct(StudentRepository $repository, StudentForm $form)
     {
-        $this->repository = $repository;
-        $this->entityName = 'student';
+        parent::__construct($repository, $form, 'student');
     }
-    public function getNewFormInstance(): StudentForm
+
+    public function showAction(): Response|ViewModel
     {
-        return new StudentForm();
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if ($id === 0) {
+            return $this->redirect()->toRoute('student', ['action' => 'add']);
+        }
+
+        $student = $this->repository->find($id);
+        if ($student == null) {
+            return $this->redirect()->toRoute('student', ['action' => 'index']);
+        }
+
+        return new ViewModel([
+            $this->entityName => $student,
+            'courses' => $this->repository->fetchAllGrades($id),
+        ]);
     }
 }

@@ -7,36 +7,45 @@ use Laminas\Form\Form;
 use Laminas\Form\FormInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
 
-abstract class CustomController extends AbstractActionController
+class CustomController extends AbstractActionController
 {
     protected CustomRepository $repository;
+    protected Form $form;
     protected string $entityName;
 
-    public function indexAction(): ViewModel
+    public function __construct(CustomRepository $repository, Form $form, string $entityName)
     {
-        return new ViewModel([
+        $this->repository = $repository;
+        $this->form = $form;
+        $this->entityName = $entityName;
+    }
+
+    public function indexAction(): array
+    {
+        return [
             $this->entityName . "s" => $this->repository->findAll(),
-        ]);
+        ];
     }
 
     public function addAction(): Response|array
     {
-        $form = $this->getNewFormInstance();
-        $form->get('submit')->setValue('Add');
+        $this->form->get('submit')->setValue('Add');
+        $additionalData = $this->addData();
 
         $request = $this->getRequest();
         if (!$request->isPost()) {
-            return ['form' => $form];
+            return ['form' => $this->form] + $additionalData;
         }
 
-        $form->setData($request->getPost());
-        if (!$form->isValid()) {
-            return ['form' => $form];
+        $this->form->setData($request->getPost());
+        if (!$this->form->isValid()) {
+            return ['form' => $this->form] + $additionalData;
         }
 
-        $this->repository->create($form->getData());
+        $data = $this->form->getData(FormInterface::VALUES_AS_ARRAY);
+        $this->performOperationsBeforeAction($data[$this->entityName]);
+        $this->repository->create($data[$this->entityName]);
         return $this->redirect()->toRoute($this->entityName, ['action' => 'index']);
     }
 
@@ -44,7 +53,7 @@ abstract class CustomController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if ($id === 0) {
-            return $this->redirect()->toRoute('admin', ['action' => 'add']);
+            return $this->redirect()->toRoute($this->entityName, ['action' => 'add']);
         }
 
         $entity = $this->repository->find($id);
@@ -52,21 +61,24 @@ abstract class CustomController extends AbstractActionController
             return $this->redirect()->toRoute($this->entityName, ['action' => 'index']);
         }
 
-        $form = $this->getNewFormInstance();
-        $form->bind($entity);
-        $form->get('submit')->setValue('Edit');
+        $this->form->bind($entity);
+        $this->form->get('submit')->setValue('Edit');
+        $additionalData = $this->addData();
 
         $request = $this->getRequest();
         if (!$request->isPost()) {
-            return ['id' => $id, 'form' => $form];
+            return ['id' => $id, 'form' => $this->form] + $additionalData;
         }
 
-        $form->setData($request->getPost());
-        if (!$form->isValid()) {
-            return ['id' => $id, 'form' => $form];
+        $a = $request->getPost();
+        $this->form->setData($request->getPost());
+        if (!$this->form->isValid()) {
+            return ['id' => $id, 'form' => $this->form] + $additionalData;
         }
 
-        $entity->exchangeArray($form->getData(FormInterface::VALUES_AS_ARRAY));
+        $data = $this->form->getData(FormInterface::VALUES_AS_ARRAY);
+        $this->performOperationsBeforeAction($data[$this->entityName]);
+        $entity->exchangeArray($data[$this->entityName]);
         $this->repository->update();
         return $this->redirect()->toRoute($this->entityName, ['action' => 'index']);
     }
@@ -95,5 +107,12 @@ abstract class CustomController extends AbstractActionController
         ];
     }
 
-    abstract public function getNewFormInstance(): Form;
+    public function addData(): array
+    {
+        return [];
+    }
+
+    public function performOperationsBeforeAction(array &$data): void
+    {
+    }
 }

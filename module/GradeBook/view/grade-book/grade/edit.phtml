@@ -1,0 +1,129 @@
+<?php
+
+$title = "Edit grade";
+$this->headTitle($title);
+?>
+    <h1><?= $this->escapeHtml($title) ?></h1>
+<?php
+$grade = $form->get('grade');
+$value = $grade->get('value');
+$value->setAttribute('class', 'form-control');
+$value->setAttribute('placeholder', 'Grade');
+
+$wage = $grade->get('wage');
+$wage->setAttribute('class', 'form-control');
+$wage->setAttribute('placeholder', 'Wage');
+
+//$course = $grade->get('course');
+//$course->setAttribute('id', 'course-select');
+//$course->setAttribute('class', 'form-control');
+//$courseOptions = [];
+//foreach ($additionalData['courses'] as $data) :
+//    $courseOptions[$data['id']] = $data['name'];
+//endforeach;
+//$course->setValueOptions($courseOptions);
+//$course->setEmptyOption('Select course');
+
+//$student = $grade->get('student');
+//$student->setAttribute('id', 'student-select');
+//$student->setAttribute('class', 'form-control');
+//$studentOptions = [];
+//foreach ($additionalData['courses'][$course->getValue()]['studentsCourse'] as $studentCourse) :
+//    $data = $studentCourse['student'];
+//    $studentOptions[$studentCourse['id']] = $data['firstName'] . ' ' . $data['lastName'];
+//endforeach;
+//$student->setValueOptions($studentOptions);
+//$student->setEmptyOption('Select student');
+
+$studentCourse = $grade->get('studentCourse');
+$studentCourse->setAttribute('id', 'student-course-select');
+$courseId = null;
+foreach ($courses as $data):
+    foreach ($data['studentsCourse'] as $studentCourseData):
+        if ($studentCourseData['id'] == $studentCourse->getValue()/*->getId()*/) {
+            $courseId = $data['id'];
+            break;
+        }
+    endforeach;
+    if ($courseId != null) {
+        break;
+    }
+endforeach;
+
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-primary');
+
+$form->setAttribute('action', $this->url('grade', [
+    'action' => 'edit',
+    'id'     => $id,
+]));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+    <div class="form-group">
+        <?= $this->formLabel($value) ?>
+        <?= $this->formElement($value) ?>
+        <?= $this->formElementErrors()->render($value, ['class' => 'help-block']) ?>
+    </div>
+
+    <div class="form-group">
+        <?= $this->formLabel($wage) ?>
+        <?= $this->formElement($wage) ?>
+        <?= $this->formElementErrors()->render($wage, ['class' => 'help-block']) ?>
+    </div>
+
+    <div class="form-group">
+        <label for="course-select">Course</label>
+        <select id="course-select" class="form-control">
+            <option value="">Select course</option>
+            <?php foreach ($courses as $data) :?>
+                <option value="<?= $data['id']; ?>"
+                    <?php if ($data['id'] == $courseId) {
+                            echo "selected=\"selected\"";
+                        } ?> >
+                    <?= $data['name']; ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="student-select">Student</label>
+        <select id="student-select" class="form-control">
+            <option value="">Select student</option>
+            <?php foreach ($courses[$courseId]['studentsCourse'] as $studentCourseData) :
+                $data = $studentCourseData['student']; ?>
+                <option value="<?= $studentCourseData['id'] ?>"
+                    <?php if ($studentCourse->getValue()/*->getId()*/ == $studentCourseData['id']) {
+                        echo "selected=\"selected\"";
+                    } ?> >
+                    <?= $data['firstName'] . ' ' . $data['lastName'] ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+<!--    <div class="form-group">-->
+<!--        --><?php //= $this->formLabel($course) ?>
+<!--        --><?php //= $this->formSelect($course) ?>
+<!--        --><?php //= $this->formElementErrors()->render($course, ['class' => 'help-block']) ?>
+<!--    </div>-->
+<!---->
+<!--    <div class="form-group">-->
+<!--        --><?php //= $this->formLabel($student) ?>
+<!--        --><?php //= $this->formSelect($student) ?>
+<!--        --><?php //= $this->formElementErrors()->render($student, ['class' => 'help-block']) ?>
+<!--    </div>-->
+
+<?php
+echo $this->formSubmit($submit);
+echo $this->formHidden($grade->get('id'));
+echo $this->formHidden($studentCourse);
+echo $this->form()->closeTag($form);
+?>
+
+<script type="text/javascript">
+    const courses = <?= json_encode($courses) ?>;
+</script>
+<script type="text/javascript" src="/js/updateStudentForm.js"></script>

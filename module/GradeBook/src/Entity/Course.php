@@ -39,21 +39,14 @@ class Course
     private Teacher $teacher;
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Grade", mappedBy="course")
+     * @ORM\OneToMany(mappedBy="course", targetEntity="StudentCourse")
      */
-    #[ORM\OneToMany(mappedBy: 'course', targetEntity: Grade::class)]
-    private Collection $grades;
-    /**
-     * @var Collection
-     * @ORM\ManyToMany(targetEntity="Student")
-     */
-    #[ORM\ManyToMany(targetEntity: Student::class)]
-    private Collection $students;
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: StudentCourse::class)]
+    private Collection $studentsCourse;
 
     public function __construct()
     {
-        $this->grades = new ArrayCollection();
-        $this->students = new ArrayCollection();
+        $this->studentsCourse = new ArrayCollection();
     }
 
     /**
@@ -107,33 +100,17 @@ class Course
     /**
      * @return Collection
      */
-    public function getGrades(): Collection
+    public function getStudentsCourse(): Collection
     {
-        return $this->grades;
+        return $this->studentsCourse;
     }
 
     /**
-     * @param Grade $grade
+     * @param StudentCourse $studentCourse
      */
-    public function addGrades(Grade $grade): void
+    public function addStudentsCourse(StudentCourse $studentCourse): void
     {
-        $this->grades[] = $grade;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getStudents(): Collection
-    {
-        return $this->students;
-    }
-
-    /**
-     * @param Student $student
-     */
-    public function addStudent(Student $student): void
-    {
-        $this->students->add($student);
+        $this->studentsCourse[] = $studentCourse;
     }
 
     public function exchangeArray(array $data): void
@@ -144,14 +121,8 @@ class Course
         if (!empty($data['name'])) {
             $this->name = $data['name'];
         }
-        if (!empty($data['teacher'])) {
+        if (!empty($data['teacher'])  && gettype($data['teacher']) != 'integer') {
             $this->teacher = $data['teacher'];
-        }
-        if (!empty($data['students'])) {
-            $this->students = $data['students'];
-        }
-        if (!empty($data['grades'])) {
-            $this->grades = $data['grades'];
         }
     }
 
@@ -160,9 +131,7 @@ class Course
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'teacher' => $this->teacher,
-            'students' => $this->students,
-            'grades' => $this->grades,
+            'teacher' => $this->teacher->getId(),
         ];
     }
 }

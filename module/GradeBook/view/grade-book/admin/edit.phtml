@@ -5,11 +5,12 @@ $this->headTitle($title);
 ?>
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
-$firstName = $form->get('firstName');
+$admin = $form->get('admin');
+$firstName = $admin->get('firstName');
 $firstName->setAttribute('class', 'form-control');
 $firstName->setAttribute('placeholder', 'First name');
 
-$lastName = $form->get('lastName');
+$lastName = $admin->get('lastName');
 $lastName->setAttribute('class', 'form-control');
 $lastName->setAttribute('placeholder', 'Last name');
 
@@ -38,5 +39,5 @@ echo $this->form()->openTag($form);
 
 <?php
 echo $this->formSubmit($submit);
-echo $this->formHidden($form->get('id'));
+echo $this->formHidden($admin->get('id'));
 echo $this->form()->closeTag($form);

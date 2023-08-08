@@ -2,7 +2,6 @@
 
 namespace GradeBook;
 
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use GradeBook\Entity\Repository\Factory\AdminRepositoryFactory;
 use GradeBook\Entity\Repository\Factory\CourseRepositoryFactory;
 use GradeBook\Entity\Repository\Factory\GradeRepositoryFactory;
@@ -101,34 +100,18 @@ return [
             ],
         ],
     ],
+    'controllers' => [
+        'factories' => [
+            Controller\AdminController::class => Controller\Factory\AdminControllerFactory::class,
+            Controller\CourseController::class => Controller\Factory\CourseControllerFactory::class,
+            Controller\GradeController::class => Controller\Factory\GradeControllerFactory::class,
+            Controller\StudentController::class => Controller\Factory\StudentControllerFactory::class,
+            Controller\TeacherController::class => Controller\Factory\TeacherControllerFactory::class,
+        ],
+    ],
     'view_manager' => [
         'template_path_stack' => [
             'gradeBook' => __DIR__ . '/../view'
         ]
-    ],
-    'doctrine' => [
-        'driver' => [
-            // defines an annotation driver with two paths, and names it `my_annotation_driver`
-            'my_annotation_driver' => [
-                'class' => AnnotationDriver::class,
-                'cache' => 'array',
-                'paths' => [
-                    'Entity\Admin.php',
-                    'Entity\Student.php',
-                    'Entity\Teacher.php',
-                    'Entity\Course.php',
-                    'Entity\Grade.php',
-                ],
-            ],
-
-            // default metadata driver, aggregates all other drivers into a single one.
-            // Override `orm_default` only if you know what you're doing
-            'orm_default' => [
-                'drivers' => [
-                    // register `my_annotation_driver` for any entity under namespace `GradeBook\Entity`
-                    'GradeBook\Entity' => 'my_annotation_driver',
-                ],
-            ],
-        ],
     ],
 ];

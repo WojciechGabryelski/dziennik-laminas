@@ -27,15 +27,15 @@ class Teacher
     private int $id;
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="first_name", type="string")
      */
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(name: 'first_name', type: 'string')]
     private string $firstName;
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="last_name", type="string")
      */
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(name: 'last_name', type: 'string')]
     private string $lastName;
     /**
      * @var Collection

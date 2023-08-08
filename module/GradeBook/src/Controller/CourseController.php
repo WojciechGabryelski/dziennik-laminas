@@ -7,13 +7,19 @@ use GradeBook\Form\CourseForm;
 
 class CourseController extends CustomController
 {
-    public function __construct(CourseRepository $repository)
+    public function __construct(CourseRepository $repository, CourseForm $form)
     {
-        $this->repository = $repository;
-        $this->entityName = 'course';
+        parent::__construct($repository, $form, 'course');
     }
-    public function getNewFormInstance(): CourseForm
+
+    public function addData(): array
     {
-        return new CourseForm();
+        $teachers = $this->repository->getTeachers();
+        return ['teachers' => $teachers];
+    }
+
+    public function performOperationsBeforeAction(array &$data): void
+    {
+        $data['teacher'] = $this->repository->findTeacher($data['teacher']);
     }
 }

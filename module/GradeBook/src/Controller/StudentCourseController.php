@@ -4,7 +4,7 @@ namespace GradeBook\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 
-class CourseTeacherController extends AbstractActionController
+class StudentCourseController extends AbstractActionController
 {
     public function indexAction()
     {

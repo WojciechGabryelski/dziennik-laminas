@@ -7,13 +7,8 @@ use GradeBook\Form\TeacherForm;
 
 class TeacherController extends CustomController
 {
-    public function __construct(TeacherRepository $repository)
+    public function __construct(TeacherRepository $repository, TeacherForm $form)
     {
-        $this->repository = $repository;
-        $this->entityName = 'teacher';
-    }
-    public function getNewFormInstance(): TeacherForm
-    {
-        return new TeacherForm();
+        parent::__construct($repository, $form, 'teacher');
     }
 }

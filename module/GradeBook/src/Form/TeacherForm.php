@@ -2,34 +2,27 @@
 
 namespace GradeBook\Form;
 
-use Laminas\Filter\StringTrim;
-use Laminas\Filter\StripTags;
-use Laminas\Filter\ToInt;
+use GradeBook\Form\Fieldset\TeacherFieldset;
 use Laminas\Form\Form;
-use Laminas\InputFilter\InputFilter;
-use Laminas\Validator\StringLength;
 
 class TeacherForm extends Form
 {
-    public function __construct($name = 'teacher', array $options = [])
+    public function init(): void
     {
-        parent::__construct($name, $options);
         $this->add([
-            'name' => 'courses',
-            'type' => '',
+            'name' => 'teacher',
+            'type' => TeacherFieldset::class,
             'options' => [
-                'label' => 'Courses',
+                'use_as_base_fieldset' => true,
             ],
         ]);
-
-        $inputFilter = $this->getInputFilter();
-        $inputFilter->add([
-            'name' => 'courses',
-            'required' => true,
-            'filters' => [
-                ['name' => ToInt::class],
+        $this->add([
+            'name' => 'submit',
+            'type' => 'submit',
+            'attributes' => [
+                'value' => 'Go',
+                'id'    => 'submitbutton',
             ],
         ]);
-        $this->setInputFilter($inputFilter);
     }
 }

@@ -38,22 +38,18 @@ class Grade
     private int $wage;
     /**
      * @var DateTime
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'datetime')]
     private DateTime $date;
     /**
-     * @var Student
-     * @ORM\ManyToOne(targetEntity="Student", inversedBy="grades")
+     * @var StudentCourse
+     * @ORM\ManyToOne(targetEntity="StudentCourse")
+     * @ORM\JoinColumn(name="student_course_id")
      */
-    #[ORM\ManyToOne(targetEntity: Student::class, inversedBy: 'grades')]
-    private Student $student;
-    /**
-     * @var Course
-     * @ORM\ManyToOne(targetEntity="Course", inversedBy="grades")
-     */
-    #[ORM\ManyToOne(targetEntity: 'Course', inversedBy: 'grades')]
-    private Course $course;
+    #[ORM\ManyToOne(targetEntity: StudentCourse::class)]
+    #[ORM\JoinColumn(name: 'student_course_id')]
+    private StudentCourse $studentCourse;
 
     /**
      * @return int
@@ -120,35 +116,19 @@ class Grade
     }
 
     /**
-     * @return Course
+     * @return StudentCourse
      */
-    public function getCourse(): Course
+    public function getStudentCourse(): StudentCourse
     {
-        return $this->course;
+        return $this->studentCourse;
     }
 
     /**
-     * @param Course $course
+     * @param StudentCourse $studentCourse
      */
-    public function setCourse(Course $course): void
+    public function setStudentCourse(StudentCourse $studentCourse): void
     {
-        $this->course = $course;
-    }
-
-    /**
-     * @return Student
-     */
-    public function getStudent(): Student
-    {
-        return $this->student;
-    }
-
-    /**
-     * @param Student $student
-     */
-    public function setStudent(Student $student): void
-    {
-        $this->student = $student;
+        $this->studentCourse = $studentCourse;
     }
 
     public function exchangeArray(array $data): void {
@@ -164,11 +144,8 @@ class Grade
         if (!empty($data['date'])) {
             $this->date = $data['date'];
         }
-        if (!empty($data['student'])) {
-            $this->student = $data['student'];
-        }
-        if (!empty($data['course'])) {
-            $this->course = $data['course'];
+        if (!empty($data['studentCourse']) && gettype($data['studentCourse']) != 'integer') {
+            $this->studentCourse = $data['studentCourse'];
         }
     }
 
@@ -179,8 +156,7 @@ class Grade
             'value' => $this->value,
             'wage' => $this->wage,
             'date' => $this->date,
-            'student' => $this->student,
-            'course' => $this->course,
+            'studentCourse' => $this->studentCourse->getId(),
         ];
     }
 }

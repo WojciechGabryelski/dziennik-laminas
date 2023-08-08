@@ -12,8 +12,28 @@
  * file.
  */
 
-use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 return [
+    'doctrine' => [
+        'driver' => [
+            // defines an annotation driver with two paths, and names it `my_annotation_driver`
+            'my_annotation_driver' => [
+                'class' => AnnotationDriver::class,
+                'cache' => 'array',
+                'paths' => [
+                    __DIR__ . '/../../module/GradeBook/src/Entity',
+                ],
+            ],
 
+            // default metadata driver, aggregates all other drivers into a single one.
+            // Override `orm_default` only if you know what you're doing
+            'orm_default' => [
+                'drivers' => [
+                    // register `my_annotation_driver` for any entity under namespace `GradeBook\Entity`
+                    'GradeBook\Entity' => 'my_annotation_driver',
+                ],
+            ],
+        ],
+    ],
 ];

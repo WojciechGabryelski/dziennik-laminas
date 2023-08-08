@@ -1,0 +1,25 @@
+<?php
+
+$title = $this->escapeHtml($student->getFirstName()) . ' ' . $this->escapeHtml($student->getLastName());
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+
+<table class="table">
+    <tr>
+        <th>Course name</th>
+        <th>Grades</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($courses as $course) : ?>
+        <tr>
+            <td><?= $this->escapeHtml($course->getName()) ?></td>
+            <td>
+                <?php foreach ($course->getStudentsCourse()[0]->getGrades() as $grade) :
+                    echo $grade->getValue() . ' ';
+                    endforeach;
+                ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

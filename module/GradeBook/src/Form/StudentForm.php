@@ -2,43 +2,27 @@
 
 namespace GradeBook\Form;
 
-use Laminas\Filter\ToInt;
+use GradeBook\Form\Fieldset\StudentFieldset;
+use Laminas\Form\Form;
 
-class StudentForm extends UserForm
+class StudentForm extends Form
 {
-    public function __construct($name = 'student', array $options = [])
+    public function init(): void
     {
-        parent::__construct($name, $options);
         $this->add([
-            'name' => 'grades',
-            'type' => '',
+            'name' => 'student',
+            'type' => StudentFieldset::class,
             'options' => [
-                'label' => 'Grades',
+                'use_as_base_fieldset' => true,
             ],
         ]);
         $this->add([
-            'name' => 'courses',
-            'type' => '',
-            'options' => [
-                'label' => 'Courses',
+            'name' => 'submit',
+            'type' => 'submit',
+            'attributes' => [
+                'value' => 'Go',
+                'id'    => 'submitbutton',
             ],
         ]);
-
-        $inputFilter = $this->getInputFilter();
-        $inputFilter->add([
-            'name' => 'grades',
-            'required' => true,
-            'filters' => [
-                ['name' => ToInt::class],
-            ],
-        ]);
-        $inputFilter->add([
-            'name' => 'courses',
-            'required' => true,
-            'filters' => [
-                ['name' => ToInt::class],
-            ],
-        ]);
-        $this->setInputFilter($inputFilter);
     }
 }

@@ -1,3 +1,9 @@
+DROP DATABASE gradebook;
 CREATE DATABASE gradebook;
 USE gradebook;
-CREATE TABLE admins(id int PRIMARY KEY AUTO_INCREMENT, firstName varchar(100) NOT NULL, lastName varchar(100) NOT NULL);
+CREATE TABLE admins(id int PRIMARY KEY AUTO_INCREMENT, first_name varchar(100) NOT NULL, last_name varchar(100) NOT NULL);
+CREATE TABLE students(id int PRIMARY KEY AUTO_INCREMENT, first_name varchar(100) NOT NULL, last_name varchar(100) NOT NULL);
+CREATE TABLE teachers(id int PRIMARY KEY AUTO_INCREMENT, first_name varchar(100) NOT NULL, last_name varchar(100) NOT NULL);
+CREATE TABLE courses(id int PRIMARY KEY AUTO_INCREMENT, name varchar(100) NOT NULL, teacher_id int NOT NULL, FOREIGN KEY (teacher_id) REFERENCES teachers(id));
+CREATE TABLE grades(id int PRIMARY KEY AUTO_INCREMENT, value int NOT NULL CHECK (value >= 1 AND value <= 6), wage int NOT NULL, assessment_date datetime NOT NULL, student_id int NOT NULL, course_id int NOT NULL, FOREIGN KEY (student_id) REFERENCES students(id), FOREIGN KEY (course_id) REFERENCES courses(id));
+CREATE TABLE students_courses(id int PRIMARY KEY AUTO_INCREMENT, student_id int NOT NULL, course_id int NOT NULL, FOREIGN KEY (student_id) REFERENCES students(id), FOREIGN KEY (course_id) REFERENCES course(id));

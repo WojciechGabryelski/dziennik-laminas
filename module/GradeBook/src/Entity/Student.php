@@ -12,6 +12,7 @@ use GradeBook\Entity\Repository\StudentRepository;
  * @ORM\Table(name="students")
  */
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
+#[ORM\Table(name: 'students')]
 class Student
 {
     /**
@@ -26,33 +27,26 @@ class Student
     private int $id;
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="first_name", type="string")
      */
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(name: 'first_name', type: 'string')]
     private string $firstName;
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="last_name", type="string")
      */
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(name: 'last_name', type: 'string')]
     private string $lastName;
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Grade", mappedBy="student")
+     * @ORM\OneToMany(mappedBy="students", targetEntity="StudentCourse")
      */
-    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Grade::class)]
-    private Collection $grades;
-    /**
-     * @var Collection
-     * @ORM\ManyToMany(targetEntity="Course")
-     */
-    #[ORM\ManyToMany(targetEntity: Course::class)]
-    private Collection $courses;
+    #[ORM\OneToMany(mappedBy: 'students', targetEntity: StudentCourse::class)]
+    private Collection $studentCourses;
 
     public function __construct()
     {
-        $this->grades = new ArrayCollection();
-        $this->courses = new ArrayCollection();
+        $this->studentCourses = new ArrayCollection();
     }
 
     /**
@@ -106,33 +100,17 @@ class Student
     /**
      * @return Collection
      */
-    public function getGrades(): Collection
+    public function getStudentCourses(): Collection
     {
-        return $this->grades;
+        return $this->studentCourses;
     }
 
     /**
-     * @param Grade $grade
+     * @param StudentCourse $studentCourse
      */
-    public function addGrade(Grade $grade): void
+    public function addStudentCourse(StudentCourse $studentCourse): void
     {
-        $this->grades[] = $grade;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getCourses(): Collection
-    {
-        return $this->courses;
-    }
-
-    /**
-     * @param Course $course
-     */
-    public function addCourse(Course $course): void
-    {
-        $this->courses->add($course);
+        $this->studentCourses[] = $studentCourse;
     }
 
     public function exchangeArray(array $data): void
@@ -146,12 +124,6 @@ class Student
         if (!empty($data['id'])) {
             $this->id = $data['id'];
         }
-        if (!empty($data['courses'])) {
-            $this->courses = $data['courses'];
-        }
-        if (!empty($data['grades'])) {
-            $this->grades = $data['grades'];
-        }
     }
 
     public function getArrayCopy(): array
@@ -160,8 +132,6 @@ class Student
             'firstName' => $this->firstName,
             'lastName'  => $this->lastName,
             'id'        => $this->id,
-            'courses'   => $this->courses,
-            'grades'    => $this->grades,
         ];
     }
 }

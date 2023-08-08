@@ -1,0 +1,18 @@
+<?php
+
+$title = 'Delete grade';
+$url   = $this->url('grade', ['action' => 'delete', 'id' => $id]);
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    Are you sure you want to delete this grade?
+</p>
+
+<form action="<?= $url ?>" method="post">
+    <div class="form-group">
+        <input type="hidden" name="id" value="<?= $grade->getId() ?>" />
+        <input type="submit" class="btn btn-danger" name="del" value="Yes" />
+        <input type="submit" class="btn btn-success" name="del" value="No" />
+    </div>
+</form>

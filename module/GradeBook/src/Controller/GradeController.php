@@ -2,18 +2,27 @@
 
 namespace GradeBook\Controller;
 
+use DateTime;
 use GradeBook\Entity\Repository\GradeRepository;
 use GradeBook\Form\GradeForm;
 
 class GradeController extends CustomController
 {
-    public function __construct(GradeRepository $repository)
+    public function __construct(GradeRepository $repository, GradeForm $form)
     {
-        $this->repository = $repository;
-        $this->entityName = 'grade';
+        parent::__construct($repository, $form, 'grade');
     }
-    public function getNewFormInstance(): GradeForm
+
+    public function addData(): array
     {
-        return new GradeForm();
+        $teacherId = 0;
+        $courses = $this->repository->getCoursesAndStudents($teacherId);
+        return ['courses' => $courses];
+    }
+
+    public function performOperationsBeforeAction(array &$data): void
+    {
+        $data['studentCourse'] = $this->repository->findStudentCourse($data['studentCourse']);
+        $data['date'] = new DateTime();
     }
 }

@@ -7,14 +7,8 @@ use GradeBook\Form\AdminForm;
 
 class AdminController extends CustomController
 {
-    public function __construct(AdminRepository $repository)
+    public function __construct(AdminRepository $repository, AdminForm $form)
     {
-        $this->repository = $repository;
-        $this->entityName = 'admin';
-    }
-
-    public function getNewFormInstance(): AdminForm
-    {
-        return new AdminForm();
+        parent::__construct($repository, $form, 'admin');
     }
 }

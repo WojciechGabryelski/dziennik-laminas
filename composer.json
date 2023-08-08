@@ -19,7 +19,8 @@
         "laminas/laminas-db": "^2.18",
         "doctrine/doctrine-orm-module": "^6.0",
         "symfony/cache": "^5.4",
-        "laminas/laminas-i18n": "^2.23"
+        "laminas/laminas-i18n": "^2.23",
+        "doctrine/doctrine-laminas-hydrator": "^3.3"
     },
     "autoload": {
         "psr-4": {

@@ -2,10 +2,27 @@
 
 namespace GradeBook\Form;
 
-class AdminForm extends UserForm
+use GradeBook\Form\Fieldset\AdminFieldset;
+use Laminas\Form\Form;
+
+class AdminForm extends Form
 {
-    public function __construct($name = 'admin', array $options = [])
+    public function init(): void
     {
-        parent::__construct($name, $options);
+        $this->add([
+            'name' => 'admin',
+            'type' => AdminFieldset::class,
+            'options' => [
+                'use_as_base_fieldset' => true,
+            ],
+        ]);
+        $this->add([
+            'name' => 'submit',
+            'type' => 'submit',
+            'attributes' => [
+                'value' => 'Go',
+                'id'    => 'submitbutton',
+            ],
+        ]);
     }
 }

@@ -2,34 +2,18 @@
 
 namespace GradeBook\Form;
 
-use Laminas\Filter\StringTrim;
-use Laminas\Filter\StripTags;
-use Laminas\Filter\ToInt;
+use GradeBook\Form\Fieldset\CourseFieldset;
 use Laminas\Form\Form;
-use Laminas\InputFilter\InputFilter;
-use Laminas\Validator\StringLength;
 
 class CourseForm extends Form
 {
-    public function __construct($name = 'course', array $options = [])
+    public function init(): void
     {
-        parent::__construct($name, $options);
         $this->add([
-            'name' => 'id',
-            'type' => 'hidden',
-        ]);
-        $this->add([
-            'name' => 'name',
-            'type' => 'text',
+            'name' => 'course',
+            'type' => CourseFieldset::class,
             'options' => [
-                'label' => 'Name',
-            ],
-        ]);
-        $this->add([
-            'name' => 'teacher',
-            'type' => 'text',
-            'options' => [
-                'label' => 'Teacher',
+                'use_as_base_fieldset' => true,
             ],
         ]);
         $this->add([
@@ -40,40 +24,5 @@ class CourseForm extends Form
                 'id'    => 'submitbutton',
             ],
         ]);
-
-        $inputFilter = new InputFilter();
-        $inputFilter->add([
-            'name' => 'id',
-            'required' => true,
-            'filters' => [
-                ['name' => ToInt::class],
-            ],
-        ]);
-        $inputFilter->add([
-            'name' => 'name',
-            'required' => true,
-            'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
-            ],
-            'validators' => [
-                [
-                    'name' => StringLength::class,
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min' => 1,
-                        'max' => 100,
-                    ],
-                ],
-            ],
-        ]);
-        $inputFilter->add([
-            'name' => 'teacher',
-            'required' => true,
-            'filters' => [
-                ['name' => ToInt::class],
-            ],
-        ]);
-        $this->setInputFilter($inputFilter);
     }
 }
