@@ -14,7 +14,7 @@ class CourseRepositoryFactory implements FactoryInterface
     /**
      * @inheritDoc
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): CourseRepository
     {
         return new CourseRepository($container->get('doctrine.entitymanager.orm_default'), new ClassMetadata(Course::class));
     }

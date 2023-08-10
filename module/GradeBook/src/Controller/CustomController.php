@@ -38,6 +38,7 @@ class CustomController extends AbstractActionController
             return ['form' => $this->form] + $additionalData;
         }
 
+        $a = $request->getPost();
         $this->form->setData($request->getPost());
         if (!$this->form->isValid()) {
             return ['form' => $this->form] + $additionalData;
@@ -70,7 +71,6 @@ class CustomController extends AbstractActionController
             return ['id' => $id, 'form' => $this->form] + $additionalData;
         }
 
-        $a = $request->getPost();
         $this->form->setData($request->getPost());
         if (!$this->form->isValid()) {
             return ['id' => $id, 'form' => $this->form] + $additionalData;

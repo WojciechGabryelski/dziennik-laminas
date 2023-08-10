@@ -45,10 +45,14 @@ class Grade
     /**
      * @var StudentCourse
      * @ORM\ManyToOne(targetEntity="StudentCourse")
-     * @ORM\JoinColumn(name="student_course_id")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="student_id", referencedColumnName="student_id"),
+     *     @ORM\JoinColumn(name="course_id", referencedColumnName="course_id")
+     * })
      */
     #[ORM\ManyToOne(targetEntity: StudentCourse::class)]
-    #[ORM\JoinColumn(name: 'student_course_id')]
+    #[ORM\JoinColumn(name: 'student_id', referencedColumnName: 'student_id')]
+    #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'course_id')]
     private StudentCourse $studentCourse;
 
     /**
@@ -144,7 +148,7 @@ class Grade
         if (!empty($data['date'])) {
             $this->date = $data['date'];
         }
-        if (!empty($data['studentCourse']) && gettype($data['studentCourse']) != 'integer') {
+        if (!empty($data['studentCourse'])) {
             $this->studentCourse = $data['studentCourse'];
         }
     }
@@ -152,11 +156,12 @@ class Grade
     public function getArrayCopy(): array
     {
         return [
-            'id' => $this->id,
-            'value' => $this->value,
-            'wage' => $this->wage,
-            'date' => $this->date,
-            'studentCourse' => $this->studentCourse->getId(),
+            'id'      => $this->id,
+            'value'   => $this->value,
+            'wage'    => $this->wage,
+            'date'    => $this->date,
+            'student' => $this->studentCourse->getStudent()->getId(),
+            'course'  => $this->studentCourse->getCourse()->getId(),
         ];
     }
 }

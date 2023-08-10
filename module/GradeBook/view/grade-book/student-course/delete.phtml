@@ -1,0 +1,20 @@
+<?php
+
+$title = 'Remove student from course';
+$url   = $this->url('studentCourse', ['action' => 'delete', 'studentId' => $studentId, 'courseId' => $courseId]);
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    Are you sure you want to remove <?= (fn($student) => $student->getFirstName() . ' ' . $student->getLastName())
+    ($studentCourse->getStudent()) ?> from <?= $studentCourse->getCourse()->getName() ?>?
+</p>
+
+<form action="<?= $url ?>" method="post">
+    <div class="form-group">
+        <input type="hidden" name="studentId" value="<?= $studentCourse->getStudent()->getId() ?>" />
+        <input type="hidden" name="courseId" value="<?= $studentCourse->getCourse()->getId() ?>" />
+        <input type="submit" class="btn btn-danger" name="del" value="Yes" />
+        <input type="submit" class="btn btn-success" name="del" value="No" />
+    </div>
+</form>

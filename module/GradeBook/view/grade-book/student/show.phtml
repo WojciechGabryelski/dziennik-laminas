@@ -13,10 +13,10 @@ $this->headTitle($title);
     </tr>
     <?php foreach ($courses as $course) : ?>
         <tr>
-            <td><?= $this->escapeHtml($course->getName()) ?></td>
+            <td><?= $this->escapeHtml($course['name']/*->getName()*/) ?></td>
             <td>
-                <?php foreach ($course->getStudentsCourse()[0]->getGrades() as $grade) :
-                    echo $grade->getValue() . ' ';
+                <?php foreach ($course['grades']/*->getStudentsCourse()[0]->getGrades()*/ as $grade) :
+                    echo $grade['value']/*->getValue()*/ . ' ';
                     endforeach;
                 ?>
             </td>

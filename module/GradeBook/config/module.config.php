@@ -5,6 +5,7 @@ namespace GradeBook;
 use GradeBook\Entity\Repository\Factory\AdminRepositoryFactory;
 use GradeBook\Entity\Repository\Factory\CourseRepositoryFactory;
 use GradeBook\Entity\Repository\Factory\GradeRepositoryFactory;
+use GradeBook\Entity\Repository\Factory\StudentCourseFactory;
 use GradeBook\Entity\Repository\Factory\StudentRepositoryFactory;
 use GradeBook\Entity\Repository\Factory\TeacherRepositoryFactory;
 use Laminas\Router\Http\Segment;
@@ -17,6 +18,7 @@ return [
             Entity\Repository\Interface\GradeRepositoryInterface::class => Entity\Repository\GradeRepository::class,
             Entity\Repository\Interface\StudentRepositoryInterface::class => Entity\Repository\StudentRepository::class,
             Entity\Repository\Interface\TeacherRepositoryInterface::class => Entity\Repository\TeacherRepository::class,
+            Entity\Repository\Interface\StudentCourseRepositoryInterface::class => Entity\Repository\StudentCourseRepository::class,
         ],
         'factories' => [
             Entity\Repository\AdminRepository::class => AdminRepositoryFactory::class,
@@ -24,6 +26,7 @@ return [
             Entity\Repository\GradeRepository::class => GradeRepositoryFactory::class,
             Entity\Repository\StudentRepository::class => StudentRepositoryFactory::class,
             Entity\Repository\TeacherRepository::class => TeacherRepositoryFactory::class,
+            Entity\Repository\StudentCourseRepository::class => StudentCourseFactory::class,
         ],
     ],
     'router' => [
@@ -98,6 +101,21 @@ return [
                     ]
                 ],
             ],
+            'studentCourse' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/studentCourse[/:action[/:studentId/:courseId]]',
+                    'constraints' => [
+                        'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'studentId' => '[0-9]+',
+                        'courseId'  => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\StudentCourseController::class,
+                        'action'     => 'index',
+                    ]
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -107,6 +125,7 @@ return [
             Controller\GradeController::class => Controller\Factory\GradeControllerFactory::class,
             Controller\StudentController::class => Controller\Factory\StudentControllerFactory::class,
             Controller\TeacherController::class => Controller\Factory\TeacherControllerFactory::class,
+            Controller\StudentCourseController::class => Controller\Factory\StudentCourseControllerFactory::class,
         ],
     ],
     'view_manager' => [

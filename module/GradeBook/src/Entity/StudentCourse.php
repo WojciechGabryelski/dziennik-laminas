@@ -2,6 +2,7 @@
 
 namespace GradeBook\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,26 +15,20 @@ use Doctrine\ORM\Mapping as ORM;
 class StudentCourse
 {
     /**
-     * @var int
+     * @var Student
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
+     * @ORM\ManyToOne(targetEntity="Student", inversedBy="studentCourses")
      */
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
-    private int $id;
-    /**
-     * @var Student
-     * @ORM\ManyToOne(targetEntity="Student")
-     */
-    #[ORM\ManyToOne(targetEntity: Student::class)]
+    #[ORM\ManyToOne(targetEntity: Student::class, inversedBy: 'studentCourses')]
     private Student $student;
     /**
      * @var Course
-     * @ORM\ManyToOne(targetEntity="Course")
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Course", inversedBy="studentsCourse")
      */
-    #[ORM\ManyToOne(targetEntity: Course::class)]
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'studentsCourse')]
     private Course $course;
     /**
      * @var Collection
@@ -42,20 +37,9 @@ class StudentCourse
     #[ORM\OneToMany(mappedBy: 'studentCourse', targetEntity: Grade::class)]
     private Collection $grades;
 
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
+        $this->grades = new ArrayCollection();
     }
 
     /**
@@ -101,21 +85,18 @@ class StudentCourse
     /**
      * @param Grade $grade
      */
-    public function setGrades(Grade $grade): void
+    public function addGrade(Grade $grade): void
     {
         $this->grades[] = $grade;
     }
 
     public function exchangeArray(array $data): void
     {
-        if (!empty($data['student'])) {
+        if (!empty($data['student']) && gettype($data['student']) != 'integer') {
             $this->student = $data['student'];
         }
-        if (!empty($data['course'])) {
+        if (!empty($data['course']) && gettype($data['course']) != 'integer') {
             $this->course = $data['course'];
-        }
-        if (!empty($data['id'])) {
-            $this->id = $data['id'];
         }
         if (!empty($data['grades'])) {
             $this->grades = $data['grades'];
@@ -125,9 +106,8 @@ class StudentCourse
     public function getArrayCopy(): array
     {
         return [
-            'student' => $this->student,
-            'course'  => $this->course,
-            'id'      => $this->id,
+            'student' => $this->student->getId(),
+            'course'  => $this->course->getId(),
             'grades'  => $this->grades,
         ];
     }

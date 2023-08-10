@@ -14,7 +14,7 @@ class TeacherRepositoryFactory implements FactoryInterface
     /**
      * @inheritDoc
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): TeacherRepository
     {
         return new TeacherRepository($container->get('doctrine.entitymanager.orm_default'), new ClassMetadata(Teacher::class));
     }

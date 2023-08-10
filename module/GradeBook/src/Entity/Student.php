@@ -39,9 +39,9 @@ class Student
     private string $lastName;
     /**
      * @var Collection
-     * @ORM\OneToMany(mappedBy="students", targetEntity="StudentCourse")
+     * @ORM\OneToMany(mappedBy="student", targetEntity="StudentCourse")
      */
-    #[ORM\OneToMany(mappedBy: 'students', targetEntity: StudentCourse::class)]
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: StudentCourse::class)]
     private Collection $studentCourses;
 
     public function __construct()

@@ -22,7 +22,7 @@ class GradeController extends CustomController
 
     public function performOperationsBeforeAction(array &$data): void
     {
-        $data['studentCourse'] = $this->repository->findStudentCourse($data['studentCourse']);
+        $data['studentCourse'] = $this->repository->findStudentCourse($data['student'], $data['course']);
         $data['date'] = new DateTime();
     }
 }

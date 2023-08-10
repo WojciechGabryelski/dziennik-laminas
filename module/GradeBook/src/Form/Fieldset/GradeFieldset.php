@@ -40,8 +40,20 @@ class GradeFieldset extends Fieldset implements InputFilterProviderInterface
             ],
         ]);
         $this->add([
-            'name' => 'studentCourse',
-            'type' => 'hidden',
+            'name' => 'student',
+            'type' => Element\Select::class,
+            'options' => [
+                'label' => 'Student',
+                'empty_option' => 'Select student',
+            ],
+        ]);
+        $this->add([
+            'name' => 'course',
+            'type' => Element\Select::class,
+            'options' => [
+                'label' => 'Course',
+                'empty_option' => 'Select course',
+            ],
         ]);
     }
     public function getInputFilterSpecification(): array
@@ -77,7 +89,13 @@ class GradeFieldset extends Fieldset implements InputFilterProviderInterface
             'date' => [
                 'required' => false,
             ],
-            'studentCourse' => [
+            'student' => [
+                'required' => true,
+                'filters' => [
+                    ['name' => ToInt::class],
+                ],
+            ],
+            'course' => [
                 'required' => true,
                 'filters' => [
                     ['name' => ToInt::class],

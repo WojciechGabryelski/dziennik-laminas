@@ -1,0 +1,36 @@
+<?php
+
+$title = 'Students enrolled in courses';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    <a href="<?= $this->url('studentCourse', ['action' => 'add']) ?>">Enroll student in course</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Student</th>
+        <th>Course</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($studentCourses as $studentCourse) : ?>
+        <tr>
+            <td><?= $this->escapeHtml((fn($student) => $student->getFirstName() . ' ' . $student->getLastName())
+                ($studentCourse->getStudent())) ?></td>
+            <td><?= $this->escapeHtml($studentCourse->getCourse()->getName()) ?></td>
+            <td>
+                <a href="<?= $this->url('studentCourse', [
+                    'action' => 'edit',
+                    'studentId' => $studentCourse->getStudent()->getId(),
+                    'courseId' => $studentCourse->getCourse()->getId(),
+                ]) ?>">Edit</a>
+                <a href="<?= $this->url('studentCourse', [
+                    'action' => 'delete',
+                    'studentId' => $studentCourse->getStudent()->getId(),
+                    'courseId' => $studentCourse->getCourse()->getId(),
+                ]) ?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
