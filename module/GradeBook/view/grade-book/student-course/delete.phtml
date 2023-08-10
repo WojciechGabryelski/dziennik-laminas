@@ -1,4 +1,11 @@
 <?php
+/**
+ * @var Studentcourse $studentCourse
+ * @var int $studentId
+ * @var int $courseId
+ */
+
+use GradeBook\Entity\StudentCourse;
 
 $title = 'Remove student from course';
 $url   = $this->url('studentCourse', ['action' => 'delete', 'studentId' => $studentId, 'courseId' => $courseId]);

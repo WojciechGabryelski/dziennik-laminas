@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var Student $student
+ * @var array $courses
+ */
+
+use GradeBook\Entity\Student;
 
 $title = $this->escapeHtml($student->getFirstName()) . ' ' . $this->escapeHtml($student->getLastName());
 $this->headTitle($title);
