@@ -52,4 +52,4 @@ echo $this->form()->closeTag();
 <script type="text/javascript">
     const courses = <?= json_encode($this->studentsCourses) ?>;
 </script>
-<script type="text/javascript" src="/js/updateStudentForm.js"></script>
+<?= $this->inlineScript()->prependFile('/js/updateStudentForm.js') ?>
