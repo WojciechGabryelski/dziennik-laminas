@@ -1,9 +1,4 @@
 <?php
-/**
- * @var array<StudentCourse> $studentCourses
- */
-
-use GradeBook\Entity\StudentCourse;
 
 $title = 'Students enrolled in courses';
 $this->headTitle($title);
@@ -19,7 +14,7 @@ $this->headTitle($title);
         <th>Course</th>
         <th>&nbsp;</th>
     </tr>
-    <?php foreach ($studentCourses as $studentCourse) : ?>
+    <?php foreach ($this->studentCourses as $studentCourse) : ?>
         <tr>
             <td><?= $this->escapeHtml((fn($student) => $student->getFirstName() . ' ' . $student->getLastName())
                 ($studentCourse->getStudent())) ?></td>

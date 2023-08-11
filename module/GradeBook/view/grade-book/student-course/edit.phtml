@@ -1,14 +1,4 @@
 <?php
-/**
- * @var array $studentsCourses
- * @var Student $studentData
- * @var StudentForm $form
- * @var int $studentId
- * @var int $courseId
- */
-
-use GradeBook\Entity\Student;
-use GradeBook\Form\StudentForm;
 
 $title = 'Edit relationship between student and course';
 $this->headTitle($title);
@@ -16,13 +6,13 @@ $this->headTitle($title);
 <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
 
-$studentCourse = $form->get('studentCourse');
+$studentCourse = $this->form->get('studentCourse');
 
 $course = $studentCourse->get('course');
 $course->setAttribute('class', 'form-control');
 $course->setAttribute('id', 'course-select');
 $courseOptions = [];
-foreach ($studentsCourses as $data):
+foreach ($this->studentsCourses as $data):
     $courseOptions[$data['id']] = $data['name'];
 endforeach;
 $course->setValueOptions($courseOptions);
@@ -30,25 +20,25 @@ $course->setValueOptions($courseOptions);
 $student = $studentCourse->get('student');
 $student->setAttribute('class', 'form-control');
 $student->setAttribute('id', 'student-select');
-$studentOptions = [$student->getValue() => $studentData->getFirstName() . ' ' . $studentData->getLastName()];
-foreach ($studentsCourses[$course->getValue()]['students'/*'studentsCourse'*/] as /*$studentCourse*/$data):
+$studentOptions = [$student->getValue() => $this->studentData->getFirstName() . ' ' . $this->studentData->getLastName()];
+foreach ($this->studentsCourses[$course->getValue()]['students'/*'studentsCourse'*/] as /*$studentCourse*/$data):
     //$data = $studentCourse['student'];
     $studentOptions[$data['id']] = $data['firstName'] . ' ' . $data['lastName'];
 endforeach;
 $student->setValueOptions($studentOptions);
 
 // This provides CSS classes for the submit button:
-$submit = $form->get('submit');
+$submit = $this->form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
-$form->setAttribute('action', $this->url('studentCourse', [
+$this->form->setAttribute('action', $this->url('studentCourse', [
     'action'    => 'edit',
-    'studentId' => $studentId,
-    'courseId'  => $courseId,
+    'studentId' => $this->studentId,
+    'courseId'  => $this->courseId,
 ]));
-$form->prepare();
+$this->form->prepare();
 
-echo $this->form()->openTag($form);
+echo $this->form()->openTag($this->form);
 ?>
 <?php // Wrap the elements in divs marked as form groups, and render the
 // label, element, and errors separately within ?>
@@ -66,10 +56,10 @@ echo $this->form()->openTag($form);
 
 <?php
 echo $this->formSubmit($submit);
-echo $this->form()->closeTag();
+echo $this->form()->closeTag($this->form);
 ?>
 
 <script type="text/javascript">
-    const courses = <?= json_encode($studentsCourses) ?>;
+    const courses = <?= json_encode($this->studentsCourses) ?>;
 </script>
 <script type="text/javascript" src="/js/updateStudentForm.js"></script>

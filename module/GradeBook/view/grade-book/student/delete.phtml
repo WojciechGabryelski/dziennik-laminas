@@ -1,25 +1,19 @@
 <?php
-/**
- * @var int $id
- * @var Student $student
- */
-
-use GradeBook\Entity\Student;
 
 $title = 'Delete student';
-$url   = $this->url('student', ['action' => 'delete', 'id' => $id]);
+$url   = $this->url('student', ['action' => 'delete', 'id' => $this->id]);
 $this->headTitle($title);
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
 <p>
     Are you sure you want to delete
-    <?= $this->escapeHtml($student->getFirstName()) ?>
-    <?= $this->escapeHtml($student->getLastName()) ?>?
+    <?= $this->escapeHtml($this->student->getFirstName()) ?>
+    <?= $this->escapeHtml($this->student->getLastName()) ?>?
 </p>
 
 <form action="<?= $url ?>" method="post">
     <div class="form-group">
-        <input type="hidden" name="id" value="<?= $student->getId() ?>" />
+        <input type="hidden" name="id" value="<?= $this->student->getId() ?>" />
         <input type="submit" class="btn btn-danger" name="del" value="Yes" />
         <input type="submit" class="btn btn-success" name="del" value="No" />
     </div>

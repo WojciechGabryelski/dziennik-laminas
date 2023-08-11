@@ -1,10 +1,4 @@
 <?php
-/**
- * @var CourseForm $form
- * @var array $teachers
- */
-
-use GradeBook\Form\CourseForm;
 
 $title = 'Add new course';
 $this->headTitle($title);
@@ -12,7 +6,7 @@ $this->headTitle($title);
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
 
-$course = $form->get('course');
+$course = $this->form->get('course');
 $name = $course->get('name');
 $name->setAttribute('class', 'form-control');
 $name->setAttribute('placeholder', 'Name');
@@ -21,19 +15,19 @@ $teacher = $course->get('teacher');
 $teacher->setAttribute('class', 'form-control');
 $teacher->setAttribute('placeholder', 'Teacher');
 $options = [];
-foreach ($teachers as $data) :
+foreach ($this->teachers as $data) :
     $options[$data['id']] = $data['firstName'] . ' ' . $data['lastName'];
 endforeach;
 $teacher->setValueOptions($options);
 
 // This provides CSS classes for the submit button:
-$submit = $form->get('submit');
+$submit = $this->form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
-$form->setAttribute('action', $this->url('course', ['action' => 'add']));
-$form->prepare();
+$this->form->setAttribute('action', $this->url('course', ['action' => 'add']));
+$this->form->prepare();
 
-echo $this->form()->openTag($form);
+echo $this->form()->openTag($this->form);
 ?>
 <?php // Wrap the elements in divs marked as form groups, and render the
 // label, element, and errors separately within ?>
@@ -52,4 +46,4 @@ echo $this->form()->openTag($form);
 <?php
 echo $this->formSubmit($submit);
 echo $this->formHidden($course->get('id'));
-echo $this->form()->closeTag();
+echo $this->form()->closeTag($this->form);

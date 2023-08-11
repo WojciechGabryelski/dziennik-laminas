@@ -1,9 +1,4 @@
 <?php
-/**
- * @var AdminForm $form
- */
-
-use GradeBook\Form\AdminForm;
 
 $title = 'Add new admin';
 $this->headTitle($title);
@@ -11,7 +6,7 @@ $this->headTitle($title);
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
 
-$admin = $form->get('admin');
+$admin = $this->form->get('admin');
 $firstName = $admin->get('firstName');
 $firstName->setAttribute('class', 'form-control');
 $firstName->setAttribute('placeholder', 'First name');
@@ -21,13 +16,13 @@ $lastName->setAttribute('class', 'form-control');
 $lastName->setAttribute('placeholder', 'Last name');
 
 // This provides CSS classes for the submit button:
-$submit = $form->get('submit');
+$submit = $this->form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
-$form->setAttribute('action', $this->url('admin', ['action' => 'add']));
-$form->prepare();
+$this->form->setAttribute('action', $this->url('admin', ['action' => 'add']));
+$this->form->prepare();
 
-echo $this->form()->openTag($form);
+echo $this->form()->openTag($this->form);
 ?>
 <?php // Wrap the elements in divs marked as form groups, and render the
 // label, element, and errors separately within ?>
@@ -46,4 +41,4 @@ echo $this->form()->openTag($form);
 <?php
 echo $this->formSubmit($submit);
 echo $this->formHidden($admin->get('id'));
-echo $this->form()->closeTag();
+echo $this->form()->closeTag($this->form);

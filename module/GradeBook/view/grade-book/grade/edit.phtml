@@ -1,18 +1,11 @@
 <?php
-/**
- * @var GradeForm $form
- * @var array $courses
- * @var int $id
- */
-
-use GradeBook\Form\GradeForm;
 
 $title = "Edit grade";
 $this->headTitle($title);
 ?>
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
-$grade = $form->get('grade');
+$grade = $this->form->get('grade');
 $value = $grade->get('value');
 $value->setAttribute('class', 'form-control');
 $value->setAttribute('placeholder', 'Grade');
@@ -25,7 +18,7 @@ $course = $grade->get('course');
 $course->setAttribute('id', 'course-select');
 $course->setAttribute('class', 'form-control');
 $courseOptions = [];
-foreach ($courses as $data) :
+foreach ($this->courses as $data) :
     $courseOptions[$data['id']] = $data['name'];
 endforeach;
 $course->setValueOptions($courseOptions);
@@ -35,7 +28,7 @@ $student = $grade->get('student');
 $student->setAttribute('id', 'student-select');
 $student->setAttribute('class', 'form-control');
 $studentOptions = [];
-foreach ($courses[$course->getValue()]['students'/*'studentsCourse'*/] as /*$studentCourse*/$data):
+foreach ($this->courses[$course->getValue()]['students'/*'studentsCourse'*/] as /*$studentCourse*/$data):
     //$data = $studentCourse['student'];
     $studentOptions[$data['id']] = $data['firstName'] . ' ' . $data['lastName'];
 endforeach;
@@ -57,16 +50,16 @@ $student->setValueOptions($studentOptions);
 //    }
 //endforeach;
 
-$submit = $form->get('submit');
+$submit = $this->form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
-$form->setAttribute('action', $this->url('grade', [
+$this->form->setAttribute('action', $this->url('grade', [
     'action' => 'edit',
-    'id'     => $id,
+    'id'     => $this->id,
 ]));
-$form->prepare();
+$this->form->prepare();
 
-echo $this->form()->openTag($form);
+echo $this->form()->openTag($this->form);
 ?>
     <div class="form-group">
         <?= $this->formLabel($value) ?>
@@ -127,10 +120,10 @@ echo $this->form()->openTag($form);
 echo $this->formSubmit($submit);
 echo $this->formHidden($grade->get('id'));
 //echo $this->formHidden($studentCourse);
-echo $this->form()->closeTag($form);
+echo $this->form()->closeTag($this->form);
 ?>
 
 <script type="text/javascript">
-    const courses = <?= json_encode($courses) ?>;
+    const courses = <?= json_encode($this->courses) ?>;
 </script>
 <script type="text/javascript" src="/js/updateStudentForm.js"></script>

@@ -1,12 +1,6 @@
 <?php
-/**
- * @var Student $student
- * @var array $courses
- */
 
-use GradeBook\Entity\Student;
-
-$title = $this->escapeHtml($student->getFirstName()) . ' ' . $this->escapeHtml($student->getLastName());
+$title = $this->escapeHtml($this->student->getFirstName()) . ' ' . $this->escapeHtml($this->student->getLastName());
 $this->headTitle($title);
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
@@ -17,7 +11,7 @@ $this->headTitle($title);
         <th>Grades</th>
         <th>&nbsp;</th>
     </tr>
-    <?php foreach ($courses as $course) : ?>
+    <?php foreach ($this->courses as $course) : ?>
         <tr>
             <td><?= $this->escapeHtml($course['name']/*->getName()*/) ?></td>
             <td>

@@ -1,12 +1,7 @@
 <?php
-/**
- * @var Grade $grade
- */
-
-use GradeBook\Entity\Grade;
 
 $title = 'Delete grade';
-$url   = $this->url('grade', ['action' => 'delete', 'id' => $id]);
+$url   = $this->url('grade', ['action' => 'delete', 'id' => $this->id]);
 $this->headTitle($title);
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
@@ -16,7 +11,7 @@ $this->headTitle($title);
 
 <form action="<?= $url ?>" method="post">
     <div class="form-group">
-        <input type="hidden" name="id" value="<?= $grade->getId() ?>" />
+        <input type="hidden" name="id" value="<?= $this->grade->getId() ?>" />
         <input type="submit" class="btn btn-danger" name="del" value="Yes" />
         <input type="submit" class="btn btn-success" name="del" value="No" />
     </div>

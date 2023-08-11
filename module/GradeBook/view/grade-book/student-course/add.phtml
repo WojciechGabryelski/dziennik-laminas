@@ -1,10 +1,4 @@
 <?php
-/**
- * @var StudentCourseForm $form
- * @var array $studentsCourses
- */
-
-use GradeBook\Form\StudentCourseForm;
 
 $title = 'Enroll student in course';
 $this->headTitle($title);
@@ -12,13 +6,13 @@ $this->headTitle($title);
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
 
-$studentCourse = $form->get('studentCourse');
+$studentCourse = $this->form->get('studentCourse');
 
 $course = $studentCourse->get('course');
 $course->setAttribute('class', 'form-control');
 $course->setAttribute('id', 'course-select');
 $courseOptions = [];
-foreach ($studentsCourses as $data):
+foreach ($this->studentsCourses as $data):
     $courseOptions[$data['id']] = $data['name'];
 endforeach;
 $course->setValueOptions($courseOptions);
@@ -28,13 +22,13 @@ $student->setAttribute('class', 'form-control');
 $student->setAttribute('id', 'student-select');
 
 // This provides CSS classes for the submit button:
-$submit = $form->get('submit');
+$submit = $this->form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
-$form->setAttribute('action', $this->url('studentCourse', ['action' => 'add']));
-$form->prepare();
+$this->form->setAttribute('action', $this->url('studentCourse', ['action' => 'add']));
+$this->form->prepare();
 
-echo $this->form()->openTag($form);
+echo $this->form()->openTag($this->form);
 ?>
 <?php // Wrap the elements in divs marked as form groups, and render the
 // label, element, and errors separately within ?>
@@ -56,6 +50,6 @@ echo $this->form()->closeTag();
 ?>
 
 <script type="text/javascript">
-    const courses = <?= json_encode($studentsCourses) ?>;
+    const courses = <?= json_encode($this->studentsCourses) ?>;
 </script>
 <script type="text/javascript" src="/js/updateStudentForm.js"></script>

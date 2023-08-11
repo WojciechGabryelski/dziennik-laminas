@@ -1,10 +1,4 @@
 <?php
-/**
- * @var TeacherForm $form
- * @var int $id
- */
-
-use GradeBook\Form\TeacherForm;
 
 $title = "Edit teacher";
 $this->headTitle($title);
@@ -12,7 +6,7 @@ $this->headTitle($title);
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
 
-$teacher = $form->get('teacher');
+$teacher = $this->form->get('teacher');
 $firstName = $teacher->get('firstName');
 $firstName->setAttribute('class', 'form-control');
 $firstName->setAttribute('placeholder', 'First name');
@@ -21,16 +15,16 @@ $lastName = $teacher->get('lastName');
 $lastName->setAttribute('class', 'form-control');
 $lastName->setAttribute('placeholder', 'Last name');
 
-$submit = $form->get('submit');
+$submit = $this->form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
-$form->setAttribute('action', $this->url('teacher', [
+$this->form->setAttribute('action', $this->url('teacher', [
     'action' => 'edit',
-    'id'     => $id,
+    'id'     => $this->id,
 ]));
-$form->prepare();
+$this->form->prepare();
 
-echo $this->form()->openTag($form);
+echo $this->form()->openTag($this->form);
 ?>
     <div class="form-group">
         <?= $this->formLabel($firstName) ?>
@@ -47,4 +41,4 @@ echo $this->form()->openTag($form);
 <?php
 echo $this->formSubmit($submit);
 echo $this->formHidden($teacher->get('id'));
-echo $this->form()->closeTag($form);
+echo $this->form()->closeTag($this->form);

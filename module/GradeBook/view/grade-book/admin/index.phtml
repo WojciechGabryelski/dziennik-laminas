@@ -1,13 +1,8 @@
 <?php
-/**
- * @var array<Admin> $admins
- */
-
-use GradeBook\Entity\Admin;
 
 $title = 'Admins';
 $this->headTitle($title);
-$this->partial('menu.phtml');
+echo $this->partial('menu.phtml');
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
 <p>
@@ -20,7 +15,7 @@ $this->partial('menu.phtml');
         <th>Last name</th>
         <th>&nbsp;</th>
     </tr>
-    <?php foreach ($admins as $admin) : ?>
+    <?php foreach ($this->admins as $admin) : ?>
         <tr>
             <td><?= $this->escapeHtml($admin->getFirstName()) ?></td>
             <td><?= $this->escapeHtml($admin->getLastName()) ?></td>
