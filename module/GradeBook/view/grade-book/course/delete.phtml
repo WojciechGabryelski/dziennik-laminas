@@ -1,8 +1,11 @@
 <?php
-
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
 $title = 'Delete course';
 $url   = $this->url('course', ['action' => 'delete', 'id' => $this->id]);
 $this->headTitle($title);
+echo $this->partial('partial/menu.phtml');
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
 <p>

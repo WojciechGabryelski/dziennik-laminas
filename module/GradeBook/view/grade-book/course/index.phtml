@@ -1,7 +1,10 @@
 <?php
-
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
 $title = 'Courses';
 $this->headTitle($title);
+echo $this->partial('partial/menu.phtml');
 ?>
 <h1><?= $this->escapeHtml($title) ?></h1>
 <p>

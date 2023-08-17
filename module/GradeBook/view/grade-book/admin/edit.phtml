@@ -1,7 +1,10 @@
 <?php
-
+/**
+ * @var Laminas\View\Renderer\PhpRenderer|Laminas\Form\View\HelperTrait $this
+ */
 $title = "Edit admin";
 $this->headTitle($title);
+echo $this->partial('partial/menu.phtml');
 ?>
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
@@ -40,4 +43,4 @@ echo $this->form()->openTag($this->form);
 <?php
 echo $this->formSubmit($submit);
 echo $this->formHidden($admin->get('id'));
-echo $this->form()->closeTag($this->form);
+echo $this->form()->closeTag();

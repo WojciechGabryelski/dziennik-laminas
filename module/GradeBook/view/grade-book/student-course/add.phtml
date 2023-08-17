@@ -1,7 +1,10 @@
 <?php
-
+/**
+ * @var Laminas\View\Renderer\PhpRenderer|Laminas\Form\View\HelperTrait $this
+ */
 $title = 'Enroll student in course';
 $this->headTitle($title);
+echo $this->partial('partial/menu.phtml');
 ?>
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php

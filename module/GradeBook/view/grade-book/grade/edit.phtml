@@ -1,7 +1,10 @@
 <?php
-
+/**
+ * @var Laminas\View\Renderer\PhpRenderer|Laminas\Form\View\HelperTrait $this
+ */
 $title = "Edit grade";
 $this->headTitle($title);
+echo $this->partial('partial/menu.phtml');
 ?>
     <h1><?= $this->escapeHtml($title) ?></h1>
 <?php
@@ -120,7 +123,7 @@ echo $this->form()->openTag($this->form);
 echo $this->formSubmit($submit);
 echo $this->formHidden($grade->get('id'));
 //echo $this->formHidden($studentCourse);
-echo $this->form()->closeTag($this->form);
+echo $this->form()->closeTag();
 ?>
 
 <script type="text/javascript">

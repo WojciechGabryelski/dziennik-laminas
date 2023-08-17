@@ -38,7 +38,6 @@ class CustomController extends AbstractActionController
             return ['form' => $this->form] + $additionalData;
         }
 
-        $a = $request->getPost();
         $this->form->setData($request->getPost());
         if (!$this->form->isValid()) {
             return ['form' => $this->form] + $additionalData;
