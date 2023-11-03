@@ -75,15 +75,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php73" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/var-exporter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-i18n" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/fig/http-message-util" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/mezzio/mezzio-helpers" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/mezzio/mezzio-router" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/mezzio/mezzio-template" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/mezzio/mezzio-twigrenderer" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-factory" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-server-handler" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-server-middleware" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
